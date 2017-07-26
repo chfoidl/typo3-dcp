@@ -11,7 +11,6 @@ class ItemsProcFunc
     /**
      * @var PluginModeUtility $pluginModeUtility
      */
-     
     protected $pluginModeUtility;
 
     public function __construct()

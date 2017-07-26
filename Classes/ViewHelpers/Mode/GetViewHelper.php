@@ -52,7 +52,6 @@ class GetViewHelper extends AbstractViewHelper implements CompilableInterface
             return null;
         }
 
-
         if (true === isset($GLOBALS['TSFE']->register[$name])) {
             $value = $GLOBALS['TSFE']->register[$name];
         }
