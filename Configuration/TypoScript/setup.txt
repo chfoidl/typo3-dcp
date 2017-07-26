@@ -1,0 +1,20 @@
+plugin.tx_dcp {
+    mvc.callDefaultActionIfActionCantBeResolved = 1
+
+	view {
+		templateRootPaths {
+			0 = EXT:dcp/Resources/Private/Templates/
+			1 = {$plugin.tx_dcp.view.templateRootPath}
+		}
+
+		partialRootPaths {
+			0 = EXT:dcp/Resources/Private/Partials/
+			1 = {$plugin.tx_dcp.view.partialRootPath}
+		}
+
+		layoutRootPaths {
+			0 = EXT:dcp/Resources/Private/Layouts/
+			1 = {$plugin.tx_dcp.view.layoutRootPath}
+		}
+	}
+}

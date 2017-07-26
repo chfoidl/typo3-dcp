@@ -1,0 +1,53 @@
+{
+    "name": "sethorax/typo3-dcp",
+    "description": "TYPO3 Extension - Dynamic Content Plugin",
+    "type": "typo3-cms-extension",
+    "version": "1.0.0",
+    "license": "GPL-3.0+",
+    "keywords": [
+        "TYPO3",
+        "CMS",
+        "typo3",
+        "plugin"
+    ],
+    "replace": {
+        "dcp": "self.version",
+        "typo3-ter/dcp": "self.version"
+    },
+    "authors": [
+        {
+            "name": "Sethorax",
+            "email": "info@sethorax.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "typo3/cms-core": ">8.7.0 || <9"
+    },
+    "require-dev": {
+        "typo3/testing-framework": "^1.0",
+        "nimut/testing-framework": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sethorax\\Dcp\\": "Classes"
+        }
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "mkdir -p .Build/Web/typo3conf/ext/",
+            "[ -L .Build/Web/typo3conf/ext/dcp ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/dcp"
+        ],
+        "test": "export TYPO3_PATH_WEB=`pwd`/.Build/Web; .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/"
+    },
+    "extra": {
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web"
+        }
+    }
+}

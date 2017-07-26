@@ -1,0 +1,12 @@
+{namespace dcp=Sethorax\Dcp\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="main">
+    <f:if condition="{ceUids}">
+        <div class="dcp-{mode}">
+            <f:for each="{ceUids}" as="uid">
+                <dcp:content.render uid="{uid}" mode="{mode}" />
+            </f:for>
+        </div>
+    </f:if>
+</f:section>

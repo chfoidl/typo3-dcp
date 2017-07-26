@@ -1,0 +1,10 @@
+plugin.tx_dcp {
+	view {
+		# cat=plugin.tx_dcp/file; type=string; label=Path to template root
+		templateRootPath = EXT:dcp/Resources/Private/Templates/
+		# cat=plugin.tx_dcp/file; type=string; label=Path to template partials
+		partialRootPath = EXT:dcp/Resources/Private/Partials/
+		# cat=plugin.tx_dcp/file; type=string; label=Path to template layouts
+		layoutRootPath = EXT:dcp/Resources/Private/Layouts/
+	}
+}

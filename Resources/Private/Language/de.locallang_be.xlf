@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2017-07-29T23:09:18Z" product-name="dcp">
+		<header/>
+		<body>
+			<trans-unit id="pi1_title" xml:space="preserve">
+				<source>Dynamic Content Plugin</source>
+                <target>Dynamic Content Plugin</target>
+			</trans-unit>
+			<trans-unit id="pi1_wizard_description" xml:space="preserve">
+				<source>Dynamic Content Plugin</source>
+                <target>Dynamic Content Plugin</target>
+			</trans-unit>
+			<trans-unit id="flexforms_tab.settings" xml:space="preserve">
+				<source>Settings</source>
+                <target>Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="flexforms_general.mode" xml:space="preserve">
+				<source>Mode</source>
+                <target>Modus</target>
+			</trans-unit>
+			<trans-unit id="flexforms_general.categories" xml:space="preserve">
+				<source>Categories</source>
+                <target>Kategorien</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

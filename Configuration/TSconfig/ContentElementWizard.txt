@@ -1,0 +1,13 @@
+mod.wizards.newContentElement.wizardItems.plugins {
+	elements {
+		news {
+			iconIdentifier = ext-dcp-wizard-icon
+			title = LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:pi1_title
+			description = LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:pi1_wizard_description
+			tt_content_defValues {
+				CType = list
+				list_type = dcp_pi1
+			}
+		}
+	}
+}
