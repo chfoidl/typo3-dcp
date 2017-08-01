@@ -35,25 +35,25 @@ class PluginModeUtility implements SingletonInterface
         return $pluginModes;
     }
 
-	/**
-	 * Get mode label by key.
-	 *
-	 * @param int $pageUid
-	 * @param string $key
-	 * @return string|null
-	 */
-	public function getModeLabelByKey($pageUid, $key)
-	{
-		$pluginModes = $this->getAvailablePluginModes($pageUid);
+    /**
+     * Get mode label by key.
+     *
+     * @param int $pageUid
+     * @param string $key
+     * @return string|null
+     */
+    public function getModeLabelByKey($pageUid, $key)
+    {
+        $pluginModes = $this->getAvailablePluginModes($pageUid);
 
-		foreach ($pluginModes as $mode) {
-			if ($mode[1] === $key) {
-				return $mode[0];
-			}
-		}
+        foreach ($pluginModes as $mode) {
+            if ($mode[1] === $key) {
+                return $mode[0];
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Get plugin modes defined in TsConfig

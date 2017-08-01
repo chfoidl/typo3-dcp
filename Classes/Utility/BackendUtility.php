@@ -8,58 +8,58 @@ use TYPO3\CMS\Core\SingletonInterface;
 
 class BackendUtility implements SingletonInterface
 {
-	/**
-	 * Gets page names by uids.
-	 *
-	 * @param array|string $uids
-	 * @return array
-	 */
-	public function getPageNamesByIds($uids)
-	{
-		if (!is_string($uids) && !is_array($uids)) {
-			return '';
-		}
+    /**
+     * Gets page names by uids.
+     *
+     * @param array|string $uids
+     * @return array
+     */
+    public function getPageNamesByIds($uids)
+    {
+        if (!is_string($uids) && !is_array($uids)) {
+            return '';
+        }
 
-		$pageNames = [];
+        $pageNames = [];
 
-		if (is_string($uids)) {
-			$ids = explode(',', $uids);
-		} else {
-			$ids = $uids;
-		}
+        if (is_string($uids)) {
+            $ids = explode(',', $uids);
+        } else {
+            $ids = $uids;
+        }
 
-		foreach ($ids as $id) {
-			$pageNames[] = BackendCoreUtility::getRecord('pages', $id)['title'];
-		}
-		
-		return $pageNames;
-	}
+        foreach ($ids as $id) {
+            $pageNames[] = BackendCoreUtility::getRecord('pages', $id)['title'];
+        }
+        
+        return $pageNames;
+    }
 
-	/**
-	 * Gets category names by uids.
-	 *
-	 * @param array|string $cids
-	 * @return array
-	 */
-	public function getCategoryNamesByIds($cids)
-	{
-		if (!is_string($cids) && !is_array($cids)) {
-			return '';
-		}
+    /**
+     * Gets category names by uids.
+     *
+     * @param array|string $cids
+     * @return array
+     */
+    public function getCategoryNamesByIds($cids)
+    {
+        if (!is_string($cids) && !is_array($cids)) {
+            return '';
+        }
 
-		$categoryNames = [];
+        $categoryNames = [];
 
-		if (is_string($cids)) {
-			$ids = explode(',', $cids);
-		} else {
-			$ids = $cids;
-		}
+        if (is_string($cids)) {
+            $ids = explode(',', $cids);
+        } else {
+            $ids = $cids;
+        }
 
-		foreach ($ids as $id) {
-			$categoryCollection = CategoryCollection::load($id, true, 'tt_content');
-			$categoryNames[] = $categoryCollection->getTitle();
-		}
+        foreach ($ids as $id) {
+            $categoryCollection = CategoryCollection::load($id, true, 'tt_content');
+            $categoryNames[] = $categoryCollection->getTitle();
+        }
 
-		return $categoryNames;
-	}
+        return $categoryNames;
+    }
 }

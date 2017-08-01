@@ -4,6 +4,10 @@ root = true
 indent_style = tab
 insert_final_newline = true
 
+[*.php]
+indent_style = space
+indent_size = 4
+
 [{package.json,.travis.yml}]
 indent_style = space
 indent_size = 2

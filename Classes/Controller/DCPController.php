@@ -13,11 +13,11 @@ class DCPController extends ActionController
      */
     public function listAction()
     {
-		$contentUids = $this->getContentElementsByCategoriesAndStorage($this->settings['categories'], $this->settings['storage']);
-		$renderer = new ContentRenderer($contentUids, $this->settings['mode'], $this->settings['order'], $this->settings['sort_direction'], $this->settings['limit']);
-		
+        $contentUids = $this->getContentElementsByCategoriesAndStorage($this->settings['categories'], $this->settings['storage']);
+        $renderer = new ContentRenderer($contentUids, $this->settings['mode'], $this->settings['order'], $this->settings['sort_direction'], $this->settings['limit']);
+        
         $this->view->assign('mode', $this->settings['mode']);
-		$this->view->assign('elements', $renderer->render());
+        $this->view->assign('elements', $renderer->render());
     }
 
     /**
