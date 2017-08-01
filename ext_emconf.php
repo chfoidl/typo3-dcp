@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Dynamic Content Plugin',
-    'description' => 'Adds a plugin to display content elements based on category and storage.',
+    'description' => "Adds a plugin to display any content element based on category and storage. It's like news but just with content elements!",
     'category' => 'fe',
     'author' => 'Sethorax',
     'author_email' => 'info@sethorax.com',
