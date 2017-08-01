@@ -3,7 +3,7 @@
 		<sDEF>
 			<ROOT>
                 <TCEforms>
-					<sheetTitle>LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:flexforms_tab.settings</sheetTitle>
+					<sheetTitle>LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:flexforms_tab.general</sheetTitle>
 				</TCEforms>
                 <type>array</type>
                 <el>
@@ -47,10 +47,10 @@
                             </config>
                         </TCEforms>
                     </settings.categories>
-                    <!-- Startingpoint -->
-					<settings.startingpoint>
+                    <!-- Storage -->
+					<settings.storage>
 						<TCEforms>
-							<label>LLL:EXT:lang/locallang_general.xlf:LGL.startingpoint</label>
+							<label>LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:flexforms_general.storage</label>
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>
@@ -69,9 +69,69 @@
 								</wizards>
 							</config>
 						</TCEforms>
-					</settings.startingpoint>
+					</settings.storage>
                 </el>
             </ROOT>
     	</sDEF>
+		<advanced>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:flexforms_tab.advanced</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<!-- Limit -->
+					<settings.limit>
+						<TCEforms>
+							<label>LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:flexforms_advanced.limit</label>
+							<config>
+								<type>input</type>
+								<size>1</size>
+								<eval>trim</eval>
+							</config>
+						</TCEforms>
+					</settings.limit>
+					<!-- Order -->
+					<settings.order>
+						<TCEforms>
+							<label>LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:flexforms_advanced.order</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Sethorax\Dcp\Hooks\ItemsProcFunc->user_orderFields</itemsProcFunc>
+								<renderType>selectSingle</renderType>
+								<items>
+									<numIndex index="0" type="array">
+										<numIndex index="0"></numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.order>
+					<!-- Sort direction -->
+					<settings.sort_direction>
+						<TCEforms>
+							<label>LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:flexforms_advanced.sort_direction</label>
+							<config>
+								<type>select</type>
+								<items type='array'>
+									<numIndex index='0' type='array'>
+										<numIndex index='0'>LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:flexforms_advanced.sort_direction.ascending</numIndex>
+										<numIndex index='1'>ASC</numIndex>
+									</numIndex>
+									<numIndex index='1' type='array'>
+										<numIndex index='0'>LLL:EXT:dcp/Resources/Private/Language/locallang_be.xlf:flexforms_advanced.sort_direction.descending</numIndex>
+										<numIndex index='1'>DESC</numIndex>
+									</numIndex>
+								</items>
+								<size>1</size>
+								<minitems>1</minitems>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.sort_direction>
+				</el>
+			</ROOT>
+		</advanced>
 	</sheets>
 </T3DataStructure>

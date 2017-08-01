@@ -8,12 +8,16 @@
                 <target>Dynamic Content Plugin</target>
 			</trans-unit>
 			<trans-unit id="pi1_wizard_description" xml:space="preserve">
-				<source>Dynamic Content Plugin</source>
-                <target>Dynamic Content Plugin</target>
+				<source>Display content elements based on category and storage.</source>
+                <target>Ausgabe von Content Elementen basierend auf Kategorie und Speicherort.</target>
 			</trans-unit>
-			<trans-unit id="flexforms_tab.settings" xml:space="preserve">
-				<source>Settings</source>
-                <target>Einstellungen</target>
+			<trans-unit id="flexforms_tab.general" xml:space="preserve">
+				<source>General</source>
+                <target>Allgemein</target>
+			</trans-unit>
+			<trans-unit id="flexforms_tab.advanced" xml:space="preserve">
+				<source>Advanced</source>
+                <target>Erweitert</target>
 			</trans-unit>
 			<trans-unit id="flexforms_general.mode" xml:space="preserve">
 				<source>Mode</source>
@@ -22,6 +26,34 @@
 			<trans-unit id="flexforms_general.categories" xml:space="preserve">
 				<source>Categories</source>
                 <target>Kategorien</target>
+			</trans-unit>
+			<trans-unit id="flexforms_general.storage" xml:space="preserve">
+				<source>Storage</source>
+				<target>Speicherorte</target>
+			</trans-unit>
+			<trans-unit id="flexforms_advanced.limit" xml:space="preserve">
+				<source>Limit</source>
+				<target>Limit</target>
+			</trans-unit>
+			<trans-unit id="flexforms_advanced.order" xml:space="preserve">
+				<source>Order by field</source>
+				<target>Nach Feld sortieren</target>
+			</trans-unit>
+			<trans-unit id="flexforms_advanced.sort_direction" xml:space="preserve">
+				<source>Sort direction</source>
+				<target>Sortierrichtung</target>
+			</trans-unit>
+			<trans-unit id="flexforms_advanced.sort_direction.ascending" xml:space="preserve">
+				<source>Ascending</source>
+				<target>Aufsteigend</target>
+			</trans-unit>
+			<trans-unit id="flexforms_advanced.sort_direction.descending" xml:space="preserve">
+				<source>Descending</source>
+				<target>Absteigend</target>
+			</trans-unit>
+			<trans-unit id="plugin_preview.elements_total" xml:space="preserve">
+				<source>Total elements</source>
+				<target>Anzahl Elemente</target>
 			</trans-unit>
 		</body>
 	</file>

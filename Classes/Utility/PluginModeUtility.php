@@ -8,7 +8,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PluginModeUtility implements SingletonInterface
 {
-
     /**
      * Get available plugin modes for a certain page
      *
@@ -35,6 +34,27 @@ class PluginModeUtility implements SingletonInterface
         }
         return $pluginModes;
     }
+
+	/**
+	 * Get mode label by key.
+	 *
+	 * @param int $pageUid
+	 * @param string $key
+	 * @return string|null
+	 */
+	public function getModeLabelByKey($pageUid, $key)
+	{
+		$pluginModes = $this->getAvailablePluginModes($pageUid);
+
+		foreach ($pluginModes as $mode) {
+			if ($mode[1] === $key) {
+				return $mode[0];
+			}
+		}
+
+		return null;
+	}
+
     /**
      * Get plugin modes defined in TsConfig
      *

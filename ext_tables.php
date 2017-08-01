@@ -6,7 +6,12 @@ $boot = function () {
     /**
      * Include Plugins
      */
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin('dcp', 'Pi1', 'Dynamic Content Plugin');
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+		'dcp',
+		'Pi1',
+		'Dynamic Content Plugin',
+		'ext-dcp-pi1-icon'
+	);
 
     /**
      * Disable not needed fields in tt_content
@@ -42,9 +47,9 @@ $boot = function () {
      */
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
     $iconRegistry->registerIcon(
-        'ext-dcp-wizard-icon',
+        'ext-dcp-pi1-icon',
         \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        ['source' => 'EXT:dcp/Resources/Public/Icons/dcp.svg']
+        ['source' => 'EXT:dcp/Resources/Public/Icons/dcp_pi1.svg']
     );
 };
 

@@ -2,15 +2,22 @@
 
 namespace Sethorax\Dcp\Controller;
 
-class DCPController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+use Sethorax\Dcp\Renderer\ContentRenderer;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
+
+class DCPController extends ActionController
 {
     /**
      * List action
      */
     public function listAction()
     {
+		$contentUids = $this->getContentElementsByCategoriesAndStorage($this->settings['categories'], $this->settings['storage']);
+		$renderer = new ContentRenderer($contentUids, $this->settings['mode'], $this->settings['order'], $this->settings['sort_direction'], $this->settings['limit']);
+		
         $this->view->assign('mode', $this->settings['mode']);
-        $this->view->assign('ceUids', $this->getContentElementsByCategoriesAndStorage($this->settings['categories'], $this->settings['startingpoint']));
+		$this->view->assign('elements', $renderer->render());
     }
 
     /**
@@ -27,7 +34,7 @@ class DCPController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $storageIdArray = explode(',', $storageIds);
 
         foreach ($categoryIdArray as $categoryId) {
-            $categoryCollection = \TYPO3\CMS\Frontend\Category\Collection\CategoryCollection::load($categoryId, true, 'tt_content');
+            $categoryCollection = CategoryCollection::load($categoryId, true, 'tt_content');
             $categoryCollection->loadContents();
 
             foreach ($categoryCollection as $contentElement) {

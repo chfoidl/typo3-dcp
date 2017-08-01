@@ -13,6 +13,9 @@ class ItemsProcFunc
      */
     protected $pluginModeUtility;
 
+	/**
+	 * Class constructor.
+	 */
     public function __construct()
     {
         $this->pluginModeUtility = GeneralUtility::makeInstance(PluginModeUtility::class);
@@ -38,6 +41,20 @@ class ItemsProcFunc
             }
         }
     }
+
+    /**
+     * Itemsproc function to extend the selection of order fields in the plugin
+     *
+     * @param array &$config configuration array
+     */
+	public function user_orderFields(array &$config)
+	{
+		$contentRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', '');
+		
+		foreach ($contentRecord as $key => $value) {
+			$config['items'][] = [$key, $key];
+		}
+	}
 
     /**
      * Get page id, if negative, then it is a "after record"
