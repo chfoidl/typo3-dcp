@@ -7,11 +7,11 @@ $boot = function () {
      * Include Plugins
      */
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-		'dcp',
-		'Pi1',
-		'Dynamic Content Plugin',
-		'ext-dcp-pi1-icon'
-	);
+        'dcp',
+        'Pi1',
+        'Dynamic Content Plugin',
+        'ext-dcp-pi1-icon'
+    );
 
     /**
      * Disable not needed fields in tt_content

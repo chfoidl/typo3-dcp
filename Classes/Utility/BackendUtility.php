@@ -31,7 +31,7 @@ class BackendUtility implements SingletonInterface
         foreach ($ids as $id) {
             $pageNames[] = BackendCoreUtility::getRecord('pages', $id)['title'];
         }
-        
+
         return $pageNames;
     }
 

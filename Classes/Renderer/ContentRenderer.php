@@ -184,7 +184,7 @@ class ContentRenderer
      */
     protected static function renderRecord(array $row)
     {
-       if ($GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']] > 0) {
+        if ($GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']] > 0) {
             return null;
         }
         $parent = $GLOBALS['TSFE']->currentRecord;

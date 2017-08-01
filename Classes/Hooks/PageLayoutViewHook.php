@@ -210,7 +210,7 @@ HTML;
 
         foreach ($categoryIdArray as $categoryId) {
             $categoryCollection = CategoryCollection::load($categoryId, true, 'tt_content');
-            
+
             foreach ($categoryCollection as $contentElement) {
                 if (in_array($contentElement['pid'], $storageIdArray)) {
                     $matchedContentElements[] = $contentElement['uid'];
