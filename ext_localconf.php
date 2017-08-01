@@ -17,7 +17,7 @@ $boot = function () {
     /**
      * Add page layout view hook.
      */
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'][$_EXTKEY] = 
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'][$_EXTKEY] =
         \Sethorax\Dcp\Hooks\PageLayoutViewHook::class;
 };
 
