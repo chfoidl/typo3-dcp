@@ -33,13 +33,14 @@ class PageLayoutViewHook implements PageLayoutViewDrawItemHookInterface
      * Preprocesses the preview rendering of a content element.
      *
      * @param PageLayoutView $parentObject Calling parent object
-     * @param boolean $drawItem Whether to draw the item using the default functionalities
+     * @param bool $drawItem Whether to draw the item using the default functionalities
      * @param string $headerContent Header content
      * @param string $itemContent Item content
      * @param array $row Record row of tt_content
      * @return void
      */
-    public function preProcess(PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
+    public function preProcess(PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row)
+    {
         if ($row['list_type'] !== 'dcp_pi1') {
             return;
         }
@@ -48,7 +49,7 @@ class PageLayoutViewHook implements PageLayoutViewDrawItemHookInterface
 
         $drawItem = false;
         $flexformValues = $this->parseFlexFormValues($row['pi_flexform']);
-        
+
         $headerContent = $this->generateHeaderContent();
         $itemContent = $this->generateItemContent($row, $flexformValues);
     }
@@ -238,7 +239,7 @@ HTML;
             foreach ($sheet['language']['field'] as $entry) {
                 $value = !is_array($entry['value']) ? $entry['value'] : '';
                 $flexformValues[$entry['@attributes']['index']] = $value;
-            }	
+            }
         }
 
         return $flexformValues;

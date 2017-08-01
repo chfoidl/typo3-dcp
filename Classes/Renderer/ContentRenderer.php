@@ -103,7 +103,7 @@ class ContentRenderer
             $languageUids[] = $GLOBALS['TSFE']->sys_language_contentOL;
         }
 
-        $languageCondition = sprintf('(sys_language_uid IN (%s)', implode(", ", $languageUids));
+        $languageCondition = sprintf('(sys_language_uid IN (%s)', implode(', ', $languageUids));
         if (0 < $currentLanguage) {
             if (true === $hideUntranslated) {
                 $languageCondition .= ' AND l18n_parent > 0';
@@ -182,7 +182,8 @@ class ContentRenderer
      * @param array $row
      * @return void
      */
-    protected static function renderRecord(array $row) {
+    protected static function renderRecord(array $row)
+    {
        if ($GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']] > 0) {
             return null;
         }

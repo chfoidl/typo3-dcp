@@ -50,7 +50,7 @@ class ItemsProcFunc
     public function user_orderFields(array &$config)
     {
         $contentRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', '');
-        
+
         foreach ($contentRecord as $key => $value) {
             $config['items'][] = [$key, $key];
         }
