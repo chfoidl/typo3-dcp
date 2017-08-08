@@ -5,16 +5,18 @@
 [![License](https://poser.pugx.org/sethorax/typo3-dcp/license)](https://packagist.org/packages/sethorax/typo3-dcp)
 
 
-> This extension adds a plugin to display centralized tt_content elements filtered by categories and storage ids.
+> This extension adds a plugin to display centralized tt_content elements based on storage (PIDs).
 
 ### Features
 
 - Works with all content elements (even third party ones like DCEs)!
-- Outputs all content elements from selected pages (or sysfolders) and categories.
+- Outputs all content elements from selected pages (or sysfolders).
 - Ability to define a plugin mode whose value can be retreived in content element templates via a built-in viewhelper.
+- Ability to further filter the elements by TYPO3 categories
 - Ability to limit the number of records.
 - Ability to select a tt_content database field used for sorting.
 - Ability to select the sorting direction.
+- Fully compatible with multiple languages and all language overlay modes.
 
 > Say hello to centralized dynamic content!
 
@@ -37,7 +39,7 @@ This extension can also be installed traditionally via the TYPO3 Extension Repos
 1. Include the static TypoScript template of the extension.
 2. Define some plugin modes via pageTS (see example below).
 3. Create the dynamic content plugin where you want to output your centralized content elements.
-4. Set your mode, categories, storage and optionally the limit, order field and sorting direction.
+4. Set your mode, and storage and optionally some categories, the limit, order field and sorting direction.
 5. Have fun with your centralized content!
 
 

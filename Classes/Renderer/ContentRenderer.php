@@ -2,8 +2,7 @@
 
 namespace Sethorax\Dcp\Renderer;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 
@@ -20,9 +19,19 @@ class ContentRenderer
     protected $configurationManager;
 
     /**
+     * @var \TYPO3\CMS\Core\Database\ConnectionPool
+     */
+    protected $db;
+
+    /**
      * @var string
      */
-    protected $contentUids;
+    protected $categoryUids;
+
+    /**
+     * @var string
+     */
+    protected $pids;
 
     /**
      * @var string
@@ -47,18 +56,21 @@ class ContentRenderer
     /**
      * Class constructor.
      *
-     * @param string $contentUids
+     * @param string $categoryUids
+     * @param string $storageIds
      * @param string $pluginMode
      * @param string $order
      * @param string $sortDirection
      * @param string $limit
      */
-    public function __construct($contentUids, $pluginMode, $order = '', $sortDirection = 'ASC', $limit = '')
+    public function __construct($categoryUids, $storageIds, $pluginMode, $order = '', $sortDirection = 'ASC', $limit = '')
     {
         $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $this->contentObject = $this->configurationManager->getContentObject();
+        $this->db = GeneralUtility::makeInstance(ConnectionPool::class);
 
-        $this->contentUids = $this->convertStringListToArray($contentUids);
+        $this->categoryUids = $categoryUids;
+        $this->pids = $storageIds;
         $this->pluginMode = $pluginMode;
         $this->order = $order;
         $this->sortDirection = $sortDirection;
@@ -72,72 +84,95 @@ class ContentRenderer
      */
     public function render()
     {
-        $renderedContentElements = [];
-        $rawRecords = $this->getRecordsById($this->contentUids);
+        $renderedRecords = [];
 
-        return $this->getRenderedRecords($rawRecords);
+        if ($this->pids) {
+            $renderedContentElements = [];
+            $rawRecords = $this->getRecordsByPids();
+            
+            if ($rawRecords) {
+                if ($this->categoryUids) {
+                    $rawRecords = $this->filterElementsByCategory($rawRecords);
+                }
+
+                $renderedRecords = $this->getRenderedRecords($rawRecords);
+            }
+        }
+
+        return $renderedRecords;
     }
 
     /**
-     * Gets records by uid.
+     * Gets records by pids.
      *
-     * @param string $contentUids
      * @return void
      */
-    protected function getRecordsById($contentUids)
+    protected function getRecordsByPids()
     {
-        $order = $this->order;
-        $limit = $this->limit;
-        $currentLanguage = $GLOBALS['TSFE']->sys_language_content;
-        $languageUids = [-1, $currentLanguage];
+        // Base config
+        $conf = [
+            'pidInList' => $this->pids,
+            'selectFields' => 'uid'
+        ];
 
-        if (!empty($order)) {
+        // Set order and sorting
+        if (!empty($this->order)) {
             $sortDirection = strtoupper(trim($this->sortDirection));
             if ($sortDirection !== 'ASC' && $sortDirection !== 'DESC') {
                 $sortDirection = 'ASC';
             }
-            $order = $order . ' ' . $sortDirection;
+
+            $conf['orderBy'] = $this->order . ' ' . $sortDirection;
         }
 
-        if (null !== $GLOBALS['TSFE']->sys_language_contentOL) {
-            $languageUids[] = $GLOBALS['TSFE']->sys_language_contentOL;
+        // Set limit
+        if ($this->limit > 0 && !$this->categoryUids) {
+            $conf['max'] = $this->limit;
         }
 
-        $languageCondition = sprintf('(sys_language_uid IN (%s)', implode(', ', $languageUids));
-        if (0 < $currentLanguage) {
-            if (true === $hideUntranslated) {
-                $languageCondition .= ' AND l18n_parent > 0';
+        // Get rows
+        return $this->contentObject->getRecords('tt_content', $conf);
+    }
+
+    /**
+     * Filters elements by category
+     *
+     * @param array $records
+     * @return array
+     */
+    protected function filterElementsByCategory($records)
+    {
+        $matchedElements = [];
+        $contentUids = implode(',', array_map(function ($n) {
+            return $n['uid'];
+        }, $records));
+
+        $queryBuilder = $this->db->getQueryBuilderForTable('sys_category_record_mm');
+        $result = $queryBuilder
+            ->select('uid_foreign AS uid')
+            ->from('sys_category_record_mm')
+            ->where(
+                $queryBuilder->expr()->in('uid_local', $this->categoryUids),
+                $queryBuilder->expr()->in('uid_foreign', $contentUids)
+            )
+            ->execute();
+
+        $matchedUids = array_map(function ($n) {
+            return $n['uid'];
+        }, $result->fetchAll());
+
+        foreach ($records as $record) {
+            if (in_array($record['uid'], $matchedUids)) {
+                $matchedElements[] = $record;
             }
-            $nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' .
-                $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
-            $languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
-        }
-        $languageCondition .= ')';
-
-        $conditions = 'uid IN (' . implode(',', $contentUids) . ')';
-        $conditions .= $this->contentObject->enableFields('tt_content', false, ['pid' => true, 'hidden' => true]) . ' AND ' . $languageCondition;
-
-        if (ExtensionManagementUtility::isLoaded('workspaces')) {
-            $conditions .= BackendUtility::versioningPlaceholderClause('tt_content');
         }
 
-        $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'tt_content', $conditions, '', $order, $limit);
-
-        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
-            return $rows;
+        // Set limit
+        if ($this->limit > 0) {
+            $matchedElements = array_slice($matchedElements, 0, $this->limit);
         }
 
-        $workspaceId = isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER']->workspace : 0;
-        if ($workspaceId) {
-            foreach ($rows as $index => $row) {
-                if (BackendUtility::getMovePlaceholder('tt_content', $row['uid'])) {
-                    unset($rows[$index]);
-                } else {
-                    $rows[$index] = $row;
-                }
-            }
-        }
-        return $rows;
+        return $matchedElements;
     }
 
     /**
@@ -148,31 +183,19 @@ class ContentRenderer
      */
     protected function getRenderedRecords(array $rows)
     {
-        $GLOBALS['TSFE']->register['dcpMode'] = $this->pluginMode;
-
         $elements = [];
-        foreach ($rows as $row) {
-            $elements[] = static::renderRecord($row);
-        }
 
-        unset($GLOBALS['TSFE']->register['dcpMode']);
+        if ($rows) {
+            $GLOBALS['TSFE']->register['dcpMode'] = $this->pluginMode;
+
+            foreach ($rows as $row) {
+                $elements[] = $this->renderRecord($row);
+            }
+
+            unset($GLOBALS['TSFE']->register['dcpMode']);
+        }
 
         return $elements;
-    }
-
-    /**
-     * Converts a string list to array.
-     *
-     * @param mixed $list
-     * @return array
-     */
-    protected function convertStringListToArray($list)
-    {
-        if (is_string($list)) {
-            return explode(',', $list);
-        }
-
-        return $list;
     }
 
     /**
@@ -182,7 +205,7 @@ class ContentRenderer
      * @param array $row
      * @return void
      */
-    protected static function renderRecord(array $row)
+    protected function renderRecord(array $row)
     {
         if ($GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']] > 0) {
             return null;
@@ -194,7 +217,7 @@ class ContentRenderer
             ++$GLOBALS['TSFE']->recordRegister[$parent];
         }
 
-        $renderedElement = $GLOBALS['TSFE']->cObj->cObjGetSingle('RECORDS', [
+        $renderedElement = $this->contentObject->cObjGetSingle('RECORDS', [
             'tables' => 'tt_content',
             'source' => $row['uid'],
             'dontCheckPid' => 1
