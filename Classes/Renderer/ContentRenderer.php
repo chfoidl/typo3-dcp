@@ -89,7 +89,7 @@ class ContentRenderer
         if ($this->pids) {
             $renderedContentElements = [];
             $rawRecords = $this->getRecordsByPids();
-            
+
             if ($rawRecords) {
                 if ($this->categoryUids) {
                     $rawRecords = $this->filterElementsByCategory($rawRecords);
