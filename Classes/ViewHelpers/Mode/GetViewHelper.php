@@ -56,8 +56,6 @@ class GetViewHelper extends AbstractViewHelper implements CompilableInterface
             $value = $GLOBALS['TSFE']->register[$name];
         }
 
-        $value .= time();
-
         return $value;
     }
 }
