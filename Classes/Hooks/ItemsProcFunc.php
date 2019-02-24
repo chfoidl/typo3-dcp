@@ -2,6 +2,7 @@
 
 namespace Sethorax\Dcp\Hooks;
 
+use Sethorax\Dcp\Utility\ConnectionUtility;
 use Sethorax\Dcp\Utility\PluginModeUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,10 +50,17 @@ class ItemsProcFunc
      */
     public function user_orderFields(array &$config)
     {
-        $contentRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', '');
+        $contentRecord = ConnectionUtility::getDBConnectionForTable("tt_content")
+            ->select(
+                ["*"],
+                "tt_content"
+            )
+            ->fetch();
 
-        foreach ($contentRecord as $key => $value) {
-            $config['items'][] = [$key, $key];
+        if ($contentRecord !== false) {
+            foreach ($contentRecord as $key => $value) {
+                $config['items'][] = [$key, $key];
+            }
         }
     }
 
