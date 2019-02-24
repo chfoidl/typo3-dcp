@@ -50,10 +50,10 @@ class ItemsProcFunc
      */
     public function user_orderFields(array &$config)
     {
-        $contentRecord = ConnectionUtility::getDBConnectionForTable("tt_content")
+        $contentRecord = ConnectionUtility::getDBConnectionForTable('tt_content')
             ->select(
-                ["*"],
-                "tt_content"
+                ['*'],
+                'tt_content'
             )
             ->fetch();
 

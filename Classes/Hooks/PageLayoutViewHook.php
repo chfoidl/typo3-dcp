@@ -81,12 +81,12 @@ HTML;
         $categories = $this->backendUtility->getCategoryNamesByIds($flexformValues['settings.categories']);
 
         if (count($categories) > 0 && $categories[0] !== null) {
-            return implode("", array_map(function ($n) {
+            return implode('', array_map(function ($n) {
                 return '<li>' . $n . '</li>';
             }, $categories));
         }
 
-        return "-";
+        return '-';
     }
 
     /**
@@ -98,7 +98,7 @@ HTML;
      */
     protected function generateItemContent($row, $flexformValues)
     {
-        if ($flexformValues['settings.storage'] === "") {
+        if ($flexformValues['settings.storage'] === '') {
             $storageNotSetLabel = $this->getLanguageService()->getLL('plugin_preview.no_storage_set');
 
             return '<strong style="color: #F60F0F;">' . $storageNotSetLabel . '</strong>';
@@ -124,7 +124,7 @@ HTML;
         $elementsTotalValue = $this->getMatchedElementCount($flexformValues['settings.categories'], $flexformValues['settings.storage']);
 
         if ((int)$limitValue > 0 && $elementsTotalValue > $limitValue) {
-            $elementsTotalValue = $limitValue . " (" . $elementsTotalValue . " " . $availableLabel .")";
+            $elementsTotalValue = $limitValue . ' (' . $elementsTotalValue . ' '. $availableLabel . ')';
         }
 
         return <<<HTML
@@ -230,7 +230,7 @@ HTML;
         $matchedContentElements = [];
         $storageIdArray = explode(',', $storageIds);
         
-        if ($categoryIds !== "") {
+        if ($categoryIds !== '') {
             $categoryIdArray = explode(',', $categoryIds);
 
             foreach ($categoryIdArray as $categoryId) {
@@ -243,13 +243,13 @@ HTML;
                 }
             }
         } else {
-            $queryBuilder = ConnectionUtility::getDBConnectionForTable("tt_content")->createQueryBuilder();
+            $queryBuilder = ConnectionUtility::getDBConnectionForTable('tt_content')->createQueryBuilder();
 
             return $queryBuilder
-                ->select("uid")
-                ->from("tt_content")
+                ->select('uid')
+                ->from('tt_content')
                 ->where(
-                    $queryBuilder->expr()->in("pid", $storageIds)
+                    $queryBuilder->expr()->in('pid', $storageIds)
                 )
                 ->execute()
                 ->rowCount();

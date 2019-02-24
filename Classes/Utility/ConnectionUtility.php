@@ -10,7 +10,7 @@ class ConnectionUtility
 {
     /**
      * Returns the DB connection for the given $tablename
-     * 
+     *
      * @return Connection
      */
     public static function getDBConnectionForTable(string $tableName)
