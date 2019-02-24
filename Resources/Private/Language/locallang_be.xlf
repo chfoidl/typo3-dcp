@@ -39,8 +39,14 @@
 			<trans-unit id="flexforms_advanced.sort_direction.descending" xml:space="preserve">
 				<source>Descending</source>
 			</trans-unit>
+			<trans-unit id="plugin_preview.no_storage_set" xml:space="preserve">
+				<source>Storage not set!</source>
+			</trans-unit>
 			<trans-unit id="plugin_preview.elements_total" xml:space="preserve">
 				<source>Total elements</source>
+			</trans-unit>
+			<trans-unit id="plugin_preview.available" xml:space="preserve">
+				<source>available</source>
 			</trans-unit>
 		</body>
 	</file>

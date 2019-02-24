@@ -3,6 +3,7 @@
 namespace Sethorax\Dcp\Hooks;
 
 use Sethorax\Dcp\Utility\BackendUtility;
+use Sethorax\Dcp\Utility\ConnectionUtility;
 use Sethorax\Dcp\Utility\PluginModeUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
@@ -75,6 +76,19 @@ class PageLayoutViewHook implements PageLayoutViewDrawItemHookInterface
 HTML;
     }
 
+    protected function getCategories($flexformValues)
+    {
+        $categories = $this->backendUtility->getCategoryNamesByIds($flexformValues['settings.categories']);
+
+        if (count($categories) > 0 && $categories[0] !== null) {
+            return implode("", array_map(function ($n) {
+                return '<li>' . $n . '</li>';
+            }, $categories));
+        }
+
+        return "-";
+    }
+
     /**
      * Generates item content.
      *
@@ -84,6 +98,12 @@ HTML;
      */
     protected function generateItemContent($row, $flexformValues)
     {
+        if ($flexformValues['settings.storage'] === "") {
+            $storageNotSetLabel = $this->getLanguageService()->getLL('plugin_preview.no_storage_set');
+
+            return '<strong style="color: #F60F0F;">' . $storageNotSetLabel . '</strong>';
+        }
+
         $modeLabel = $this->getLanguageService()->getLL('flexforms_general.mode');
         $categoryLabel = $this->getLanguageService()->getLL('flexforms_general.categories');
         $storageLabel = $this->getLanguageService()->getLL('flexforms_general.storage');
@@ -91,11 +111,10 @@ HTML;
         $orderLabel = $this->getLanguageService()->getLL('flexforms_advanced.order');
         $sortDirectionLabel = $this->getLanguageService()->getLL('flexforms_advanced.sort_direction');
         $elementsTotalLabel = $this->getLanguageService()->getLL('plugin_preview.elements_total');
+        $availableLabel = $this->getLanguageService()->getLL('plugin_preview.available');
 
         $modeValue = $this->pluginModeUtility->getModeLabelByKey($row['pid'], $flexformValues['settings.mode']);
-        $categoryValue = implode(array_map(function ($n) {
-            return '<li>' . $n . '</li>';
-        }, $this->backendUtility->getCategoryNamesByIds($flexformValues['settings.categories'])));
+        $categoryValue = $this->getCategories($flexformValues);
         $storageValue = implode(array_map(function ($n) {
             return '<li>' . $n . '</li>';
         }, $this->backendUtility->getPageNamesByIds($flexformValues['settings.storage'])));
@@ -103,6 +122,10 @@ HTML;
         $orderValue = $this->formatValue($flexformValues['settings.order']);
         $sortDirectionValue = $this->getSortDirectionName($this->formatValue($flexformValues['settings.sort_direction']));
         $elementsTotalValue = $this->getMatchedElementCount($flexformValues['settings.categories'], $flexformValues['settings.storage']);
+
+        if ((int)$limitValue > 0 && $elementsTotalValue > $limitValue) {
+            $elementsTotalValue = $limitValue . " (" . $elementsTotalValue . " " . $availableLabel .")";
+        }
 
         return <<<HTML
 <table>
@@ -205,17 +228,31 @@ HTML;
     protected function getMatchedElementCount($categoryIds, $storageIds)
     {
         $matchedContentElements = [];
-        $categoryIdArray = explode(',', $categoryIds);
         $storageIdArray = explode(',', $storageIds);
+        
+        if ($categoryIds !== "") {
+            $categoryIdArray = explode(',', $categoryIds);
 
-        foreach ($categoryIdArray as $categoryId) {
-            $categoryCollection = CategoryCollection::load($categoryId, true, 'tt_content');
-
-            foreach ($categoryCollection as $contentElement) {
-                if (in_array($contentElement['pid'], $storageIdArray)) {
-                    $matchedContentElements[] = $contentElement['uid'];
+            foreach ($categoryIdArray as $categoryId) {
+                $categoryCollection = CategoryCollection::load($categoryId, true, 'tt_content');
+    
+                foreach ($categoryCollection as $contentElement) {
+                    if (in_array($contentElement['pid'], $storageIdArray)) {
+                        $matchedContentElements[] = $contentElement['uid'];
+                    }
                 }
             }
+        } else {
+            $queryBuilder = ConnectionUtility::getDBConnectionForTable("tt_content")->createQueryBuilder();
+
+            return $queryBuilder
+                ->select("uid")
+                ->from("tt_content")
+                ->where(
+                    $queryBuilder->expr()->in("pid", $storageIds)
+                )
+                ->execute()
+                ->rowCount();
         }
 
         return count(array_unique($matchedContentElements));

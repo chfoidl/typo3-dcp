@@ -51,9 +51,17 @@
 				<source>Descending</source>
 				<target>Absteigend</target>
 			</trans-unit>
+			<trans-unit id="plugin_preview.no_storage_set" xml:space="preserve">
+				<source>Storage not set!</source>
+				<target>Speicherort nicht definiert!</target>
+			</trans-unit>
 			<trans-unit id="plugin_preview.elements_total" xml:space="preserve">
 				<source>Total elements</source>
 				<target>Anzahl Elemente</target>
+			</trans-unit>
+			<trans-unit id="plugin_preview.available" xml:space="preserve">
+				<source>available</source>
+				<target>verfügbar</target>
 			</trans-unit>
 		</body>
 	</file>
