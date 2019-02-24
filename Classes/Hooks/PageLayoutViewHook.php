@@ -124,7 +124,7 @@ HTML;
         $elementsTotalValue = $this->getMatchedElementCount($flexformValues['settings.categories'], $flexformValues['settings.storage']);
 
         if ((int)$limitValue > 0 && $elementsTotalValue > $limitValue) {
-            $elementsTotalValue = $limitValue . ' (' . $elementsTotalValue . ' '. $availableLabel . ')';
+            $elementsTotalValue = $limitValue . ' (' . $elementsTotalValue . ' ' . $availableLabel . ')';
         }
 
         return <<<HTML
@@ -229,13 +229,13 @@ HTML;
     {
         $matchedContentElements = [];
         $storageIdArray = explode(',', $storageIds);
-        
+
         if ($categoryIds !== '') {
             $categoryIdArray = explode(',', $categoryIds);
 
             foreach ($categoryIdArray as $categoryId) {
                 $categoryCollection = CategoryCollection::load($categoryId, true, 'tt_content');
-    
+
                 foreach ($categoryCollection as $contentElement) {
                     if (in_array($contentElement['pid'], $storageIdArray)) {
                         $matchedContentElements[] = $contentElement['uid'];
